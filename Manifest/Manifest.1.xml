@@ -1,6 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
 <ExtensionPackages Version='1.0.0.0' Compression='none'>
     <ExtensionPackage>
+        <Name>Codecov</Name>
+        <Version>1.0.0.1</Version>
+        <Description>Extract code-coverage out of a TTD trace</Description>
+        <Components>
+            <ScriptComponent Name='Codecov' Type='Engine' File='..\codecov\codecov.js' FilePathKind='RepositoryRelative'>
+                <FunctionAliases>
+                    <FunctionAlias Name='codecov'>
+                        <AliasItem>
+                            <Syntax>
+                                <![CDATA[!codecov <pattern>]]>
+                            </Syntax>
+                            <Description>
+                                <![CDATA[Codecov pattern.]]>
+                            </Description>
+                        </AliasItem>
+                    </FunctionAlias>
+                </FunctionAliases>
+            </ScriptComponent>
+        </Components>
+    </ExtensionPackage>
+
+    <ExtensionPackage>
         <Name>Telescope</Name>
         <Version>1.0.0.1</Version>
         <Description>Telescope data dereference</Description>
