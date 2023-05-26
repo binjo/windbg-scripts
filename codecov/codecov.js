@@ -52,7 +52,7 @@ function CodeCoverageModule(Module) {
     };
 }
 
-function CodeCov(ModulePattern) {
+function CodeCovImpl(ModulePattern) {
     const CurrentSession = host.currentSession;
     const CurrentProcess = host.currentProcess;
     const Utility = host.namespace.Debugger.Utility;
@@ -133,11 +133,18 @@ function CodeCov(ModulePattern) {
     logln('Done!');
 }
 
+let MyCodeCov = {
+    CodeCov: function() {
+        CodeCovImpl(ExtractModuleName(this.Name));
+    }
+}
+
 function initializeScript() {
     return [
         new host.apiVersionSupport(1, 2),
+        new host.namedModelParent(MyCodeCov, 'Debugger.Models.Module'),
         new host.functionAlias(
-            CodeCov,
+            CodeCovImpl,
             'codecov'
         )
     ];
