@@ -27,10 +27,10 @@ function ExtractModuleName(ModulePath) {
     );
 }
 
-function CodeCoverageModule(Module) {
+function CodeCoverageModule(Module, RangeEA=0, RangeSize=0) {
     const CurrentSession = host.currentSession;
-    const BaseAddress = Module.BaseAddress;
-    const Size = Module.Size;
+    const BaseAddress = RangeEA != 0 ? RangeEA : Module.BaseAddress;
+    const Size = RangeSize != 0 ? RangeSize : Module.Size;
 
     const CoverageLines = CurrentSession.TTD.Memory(
         BaseAddress,
@@ -52,7 +52,7 @@ function CodeCoverageModule(Module) {
     };
 }
 
-function CodeCovImpl(ModulePattern) {
+function CodeCovImpl(ModulePattern, RangeEA=0, RangeSize=0) {
     const CurrentSession = host.currentSession;
     const CurrentProcess = host.currentProcess;
     const Utility = host.namespace.Debugger.Utility;
@@ -99,7 +99,7 @@ function CodeCovImpl(ModulePattern) {
     const CoverageModules = [];
     logln('Found ' + Modules.Count() + ' hits');
     for(const Module of Modules) {
-        const ModuleCoverage = CodeCoverageModule(Module);
+        const ModuleCoverage = CodeCoverageModule(Module, RangeEA, RangeSize);
         logln('Found ' + ModuleCoverage.Offsets.length + ' unique addresses in ' + Module.Name);
         CoverageModules.push(ModuleCoverage);
     }
@@ -136,6 +136,9 @@ function CodeCovImpl(ModulePattern) {
 let MyCodeCov = {
     CodeCov: function() {
         CodeCovImpl(ExtractModuleName(this.Name));
+    },
+    CodeCovInRange: function(base, size) {
+        CodeCovImpl(ExtractModuleName(this.Name), base, size);
     }
 }
 
