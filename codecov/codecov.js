@@ -134,10 +134,7 @@ function CodeCovImpl(ModulePattern, RangeEA=0, RangeSize=0) {
 }
 
 let MyCodeCov = {
-    CodeCov: function() {
-        CodeCovImpl(ExtractModuleName(this.Name));
-    },
-    CodeCovInRange: function(base, size) {
+    CodeCov: function(base=0, size=0) {
         CodeCovImpl(ExtractModuleName(this.Name), base, size);
     }
 }
